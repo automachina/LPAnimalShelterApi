@@ -75,6 +75,11 @@ for (int i = 1; i <= 10; i++)
 app.MapGet("/", shelter.GetShelterKennels);
 
 /// <summary>
+/// Retrieves the occupied kennels
+/// </summary>
+app.MapGet("/occupied", shelter.GetOccupiedKennels);
+
+/// <summary>
 /// Retrieves the available kennels in the shelter.
 /// </summary>
 app.MapGet("/available", shelter.GetAvailableKennels);
@@ -301,11 +306,14 @@ class Shelter
         return false;
     }
 
-    public IList<Kennel> GetShelterKennels() => 
-        kennels.Select(k => k.Value).ToList();
+    public IEnumerable<Kennel> GetShelterKennels() =>
+        kennels.Select(k => k.Value);
 
-    public IList<Kennel> GetAvailableKennels() =>
-        kennels.Where(k => !k.Value.IsOccupied).Select(k => k.Value).ToList();
+    public IEnumerable<Kennel> GetOccupiedKennels() =>
+        kennels.Select(k => k.Value).Where(k => k.IsOccupied);
+
+    public IEnumerable<Kennel> GetAvailableKennels() =>
+        kennels.Where(k => !k.Value.IsOccupied).Select(k => k.Value);
 
     public bool TryMoveAnimal(Kennel source, Kennel target)
     {
@@ -317,7 +325,7 @@ class Shelter
         return false;
     }
 
-    public IList<Kennel> Reorganize()
+    public IEnumerable<Kennel> Reorganize()
     {
         for(var i = kennels.Count; i > 0; i--)
         {

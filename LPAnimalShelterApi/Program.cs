@@ -67,8 +67,8 @@ for (int i = 1; i <= 10; i++)
     shelter.TryAddAnimal(new Animal("Cat", $"Dizzy{i}", 9.1));
 for (int i = 1; i <= 10; i++)
     shelter.TryAddAnimal(new Animal("Dog", $"Bob{i}", 34.5));
-
 #endif
+
 /// <summary>
 /// Retrieves the shelter's current kennel statuses
 /// </summary>

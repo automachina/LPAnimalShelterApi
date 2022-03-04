@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using static MiniValidation.MiniValidator;
 
@@ -187,7 +188,7 @@ class Kennel
         return false;
     }
 
-    public bool TryAddAnimal(Animal animal, out Animal newAnimal)
+    public bool TryAddAnimal(Animal animal,[NotNullWhen(true)] out Animal newAnimal)
     {
         newAnimal = animal;
         if (CanOccupy(animal))
@@ -199,7 +200,7 @@ class Kennel
         return false;
     }
 
-    public bool TryRemoveAnimal(out Animal animal)
+    public bool TryRemoveAnimal([NotNullWhen(true)] out Animal animal)
     {
         animal = Animal.Empty;
         if (Occupant == null) return false;
@@ -208,7 +209,7 @@ class Kennel
         return true;
     }
 
-    public bool TryRemoveAnimal(int id, out Animal animal)
+    public bool TryRemoveAnimal(int id,[NotNullWhen(true)] out Animal animal)
     {
         animal = Animal.Empty;
         if (Occupant?.Id != id) return false;
@@ -264,7 +265,7 @@ class Shelter
         return false;
     }
 
-    public bool TryAddAnimal(Animal animal, out Animal newAnimal)
+    public bool TryAddAnimal(Animal animal,[NotNullWhen(true)] out Animal newAnimal)
     {
         newAnimal = Animal.Empty;
         for (var i = 1; i <= kennels.Count; i++)
@@ -279,7 +280,7 @@ class Shelter
         return false;
     }
 
-    public bool TryGetAnimal(int id, out Animal animal)
+    public bool TryGetAnimal(int id,[NotNullWhen(true)] out Animal animal)
     {
         animal = Animal.Empty;
         for (var i = 1; i <= kennels.Count; i++)
@@ -294,7 +295,7 @@ class Shelter
         return false;
     }
 
-    public bool TryRemoveAnimal(int id, out Animal animal)
+    public bool TryRemoveAnimal(int id,[NotNullWhen(true)] out Animal animal)
     {
         animal = Animal.Empty;
         for (var i = 1; i <= kennels.Count; i++)
@@ -330,7 +331,7 @@ class Shelter
         for(var i = kennels.Count; i > 0; i--)
         {
             var source = kennels[i];
-            if (!(source.Occupant is Animal occupant)) 
+            if (source.Occupant is not Animal occupant)
                 continue;
             for(var j = 1; j < i; j++)
             {
